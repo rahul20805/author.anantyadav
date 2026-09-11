@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  outputFileTracingIncludes: {
+    "/**": ["./prisma/**/*", "./prisma/dev.db"],
+  },
 };
 
 export default nextConfig;

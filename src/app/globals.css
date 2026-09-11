@@ -1,26 +1,176 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg-primary: #0a0b0e;
+    --bg-secondary: #12141a;
+    --bg-tertiary: #1a1d26;
+    --bg-card: rgba(22, 25, 34, 0.85);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(197, 168, 128, 0.25);
+    
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    
+    --accent-gold: #d4af37;
+    --accent-bronze: #c5a880;
+    --accent-hover: #e2c290;
+    
+    --font-serif: "Newsreader", "Playfair Display", "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .light {
+    --bg-primary: #fcfbf9;
+    --bg-secondary: #f4f1ea;
+    --bg-tertiary: #e9e4d8;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --border-accent: rgba(166, 124, 82, 0.3);
+    
+    --text-primary: #1c1917;
+    --text-secondary: #57534e;
+    --text-muted: #8c827a;
+    
+    --accent-gold: #996515;
+    --accent-bronze: #8c6239;
+    --accent-hover: #704214;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Literary typography */
+.font-serif-literary {
+  font-family: var(--font-serif);
+}
+
+.font-sans-ui {
+  font-family: var(--font-sans);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #71717a;
+}
+
+/* Poetry stanza styling */
+.poetry-stanza {
+  font-family: var(--font-serif);
+  line-height: 1.95;
+  letter-spacing: 0.01em;
+  white-space: pre-line;
+}
+
+/* Reading mode controls */
+.reader-sepia {
+  background-color: #f7f3e8 !important;
+  color: #2b2520 !important;
+}
+
+.reader-dark {
+  background-color: #0d0e12 !important;
+  color: #e5e7eb !important;
+}
+
+.reader-light {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* Editorial prose styling */
+.editorial-prose {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.85;
+  color: var(--text-primary);
+}
+
+.editorial-prose h2 {
+  font-family: var(--font-sans);
+  font-size: 1.85rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.editorial-prose h3 {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.editorial-prose p {
+  margin-bottom: 1.5rem;
+}
+
+.editorial-prose blockquote {
+  border-left: 3px solid var(--accent-bronze);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--accent-bronze);
+}
+
+.editorial-prose ul {
+  list-style-type: disc;
+  margin-left: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.editorial-prose ol {
+  list-style-type: decimal;
+  margin-left: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.editorial-prose li {
+  margin-bottom: 0.5rem;
+}
+
+/* Ambient glow & backdrop effects */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.15);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f5f5f7 20%, #d4af37 60%, #c5a880 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

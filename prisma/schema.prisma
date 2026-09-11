@@ -1,0 +1,227 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AuthorProfile {
+  id            String   @id @default("default")
+  name          String   @default("Anant Yadav")
+  title         String   @default("Author • Poet • Writer • Thinker")
+  taglines      String   @default("Exploring human depth, philosophical contemplation, and modern literary expression.")
+  shortBio      String
+  fullBio       String
+  statement     String
+  philosophy    String
+  education     String?
+  publications  String?
+  achievements  String?
+  email         String   @default("contact@anantyadav.com")
+  location      String?  @default("India")
+  phone         String?
+  pressKitUrl   String?
+  profileImage  String?
+  heroImage     String?
+  socialLinks   String   @default("{\"twitter\":\"https://twitter.com/\",\"instagram\":\"https://instagram.com/\",\"linkedin\":\"https://linkedin.com/in/\",\"goodreads\":\"https://goodreads.com/\",\"substack\":\"https://substack.com/\"}")
+  isPublished   Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+}
+
+model Book {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  subtitle        String?
+  description     String
+  longDescription String?
+  authorNote      String?
+  publisher       String?
+  isbn            String?
+  genre           String   @default("Literary Fiction")
+  language        String   @default("English")
+  pageCount       Int?
+  publicationDate String?
+  coverImage      String?
+  purchaseLinks   String   @default("[]") // JSON string: [{ "label": "Amazon", "url": "https://amazon.com", "isPrimary": true }]
+  rating          Float    @default(0.0)
+  reviewCount     Int      @default(0)
+  featured        Boolean  @default(false)
+  published       Boolean  @default(true)
+  tags            String   @default("[]") // JSON string: ["philosophy", "novel"]
+  seoTitle        String?
+  seoDescription  String?
+  canonicalUrl    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  reviews         Review[]
+}
+
+model Poem {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  subtitle       String?
+  content        String   // Multi-line stanzas
+  excerpt        String?
+  category       String   @default("Contemporary")
+  tags           String   @default("[]") // JSON string
+  coverImage     String?
+  readingTime    Int      @default(2) // in minutes
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  audioUrl       String?
+  publishDate    String?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Writing {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  subtitle       String?
+  content        String   // Markdown / Rich text
+  excerpt        String?
+  category       String   @default("Essay") // Essay, Article, Reflection, Literary Note, Philosophy
+  tags           String   @default("[]") // JSON string
+  coverImage     String?
+  readingTime    Int      @default(5) // in minutes
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  canonicalUrl   String?
+  publishDate    String?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Thought {
+  id         String   @id @default(uuid())
+  quote      String
+  context    String?
+  source     String?  @default("Anant Yadav")
+  category   String   @default("Philosophy")
+  featured   Boolean  @default(false)
+  published  Boolean  @default(true)
+  shareImage String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model MediaItem {
+  id          String   @id @default(uuid())
+  title       String
+  publication String
+  date        String
+  url         String?
+  excerpt     String?
+  mediaType   String   @default("interview") // interview, article, podcast, video, press
+  coverImage  String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EventItem {
+  id          String   @id @default(uuid())
+  title       String
+  date        String   // YYYY-MM-DD or readable
+  time        String?
+  venue       String
+  city        String
+  description String
+  rsvpUrl     String?
+  coverImage  String?
+  isPast      Boolean  @default(false)
+  isOnline    Boolean  @default(false)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  bookId      String?
+  book        Book?    @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  readerName  String
+  readerEmail String?
+  rating      Int      @default(5)
+  comment     String
+  isApproved  Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  category  String   @default("general") // general, press, speaking, rights, reader
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  status    String   @default("active") // active, unsubscribed
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id                         String   @id @default("default")
+  siteTitle                  String   @default("Anant Yadav | Author, Poet & Thinker")
+  tagline                    String   @default("Official Digital Home of Author Anant Yadav")
+  metaDescription            String   @default("The official website of Anant Yadav: Explore books, poetry, essays, philosophical musings, events, and media.")
+  keywords                   String   @default("Anant Yadav, author, poet, writer, thinker, Indian literature, contemporary poetry, essays, books")
+  faviconUrl                 String?
+  ogImageUrl                 String?
+  authorName                 String   @default("Anant Yadav")
+  googleAnalyticsId          String?
+  googleSearchConsoleToken   String?
+  announcementText           String?
+  announcementUrl            String?
+  announcementActive         Boolean  @default(false)
+  footerAbout                String   @default("Anant Yadav is an author, poet, and thinker dedicated to exploring the nuances of the human condition, philosophy, and modern poetry.")
+  copyrightText              String   @default("© All rights reserved. Anant Yadav.")
+  navLinks                   String   @default("[{\"label\":\"Home\",\"href\":\"/\"},{\"label\":\"About\",\"href\":\"/about\"},{\"label\":\"Books\",\"href\":\"/books\"},{\"label\":\"Poetry\",\"href\":\"/poetry\"},{\"label\":\"Writings\",\"href\":\"/writings\"},{\"label\":\"Thoughts\",\"href\":\"/thoughts\"},{\"label\":\"Media\",\"href\":\"/media\"},{\"label\":\"Events\",\"href\":\"/events\"},{\"label\":\"Contact\",\"href\":\"/contact\"}]")
+  socialLinks                String   @default("{\"twitter\":\"https://twitter.com/\",\"instagram\":\"https://instagram.com/\",\"linkedin\":\"https://linkedin.com/in/\",\"goodreads\":\"https://goodreads.com/\"}")
+  updatedAt                  DateTime @updatedAt
+}
+
+model MediaAsset {
+  id        String   @id @default(uuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int
+  altText   String?
+  createdAt DateTime @default(now())
+}

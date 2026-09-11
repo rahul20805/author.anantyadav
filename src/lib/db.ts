@@ -7,34 +7,48 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function getDatabaseUrl(): string {
-  const envUrl = process.env.DATABASE_URL;
+  const bundledDb = path.join(process.cwd(), "prisma", "dev.db");
+  const tmpDb = "/tmp/dev.db";
 
-  // If a DATABASE_URL is explicitly set and is NOT a bare relative file: URI, use it as-is.
-  // A bare relative path like "file:./dev.db" is not usable in serverless — resolve it.
-  if (envUrl && !envUrl.match(/^file:\.[\/\\]/)) {
+  // On Vercel (and similar serverless platforms), /var/task is read-only at runtime.
+  // We must copy the seeded DB to /tmp (writable) before Prisma can write to it.
+  const isServerless =
+    !!process.env.VERCEL ||
+    !!process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.NODE_ENV === "production";
+
+  if (isServerless) {
+    try {
+      // Copy bundled seeded DB → /tmp on every cold start for write access
+      if (fs.existsSync(bundledDb)) {
+        fs.copyFileSync(bundledDb, tmpDb);
+        return `file:${tmpDb}`;
+      }
+    } catch (e) {
+      console.error("[db] Failed to copy DB to /tmp:", e);
+    }
+    // Fallback: use bundled path (reads work, writes will fail — last resort)
+    return `file:${bundledDb}`;
+  }
+
+  // ── Local development ──────────────────────────────────────────
+  const envUrl = process.env.DATABASE_URL;
+  if (envUrl && !envUrl.match(/^file:\.\//)) {
     return envUrl;
   }
 
-  // Resolve the absolute path to the bundled SQLite file.
-  // Vercel bundles the prisma/ directory under /var/task (= process.cwd()).
+  // Scan for the dev.db file relative to cwd
   const candidates = [
     path.join(process.cwd(), "prisma", "dev.db"),
     path.join(process.cwd(), "dev.db"),
-    // __dirname-relative paths for edge cases
-    path.join(path.dirname(new URL(import.meta.url).pathname), "..", "..", "prisma", "dev.db"),
   ];
-
   for (const candidate of candidates) {
     try {
-      if (fs.existsSync(/*turbopackIgnore: true*/ candidate)) {
-        return `file:${candidate}`;
-      }
+      if (fs.existsSync(candidate)) return `file:${candidate}`;
     } catch {
       // ignore
     }
   }
-
-  // Final fallback — Vercel standard path
   return `file:${path.join(process.cwd(), "prisma", "dev.db")}`;
 }
 
@@ -49,6 +63,5 @@ export const prisma =
     log: ["error"],
   });
 
-// Cache the client globally to prevent connection exhaustion across hot-reloads
+// Cache globally — prevents a new PrismaClient on every hot-reload/warm invocation
 globalForPrisma.prisma = prisma;
-

@@ -74,7 +74,10 @@ export default function AdminProfilePage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Update failed");
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || body.error || `HTTP ${res.status}`);
+      }
       success("Author profile updated successfully!");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Error saving";

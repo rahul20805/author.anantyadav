@@ -63,7 +63,8 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ success: true, profile });
   } catch (error) {
-    console.error("Error updating author profile:", error);
-    return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Error updating author profile:", msg);
+    return NextResponse.json({ error: "Failed to update profile", detail: msg }, { status: 500 });
   }
 }

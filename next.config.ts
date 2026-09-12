@@ -16,6 +16,15 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["./prisma/**/*", "./prisma/dev.db"],
   },
+  async redirects() {
+    return [
+      {
+        source: '/(.*)',
+        destination: 'https://authoranant.ezy1.site/$1',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

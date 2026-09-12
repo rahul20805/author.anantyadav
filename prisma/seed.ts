@@ -1,7 +1,26 @@
-import { PrismaClient } from "@prisma/client";
+import fs from "fs";
+import path from "path";
+
+// Load .env
+try {
+  const envPath = path.join(process.cwd(), ".env");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    for (const line of envContent.split("\n")) {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*"(.*)"\s*$/) || line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+      if (match) {
+        const [, key, value] = match;
+        if (!process.env[key]) {
+          process.env[key] = value.trim();
+        }
+      }
+    }
+  }
+} catch (e) {}
+
+import { prisma } from "../src/lib/db";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding database...");

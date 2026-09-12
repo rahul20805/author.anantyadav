@@ -1,67 +1,35 @@
-import path from "path";
-import fs from "fs";
 import { PrismaClient } from "@prisma/client";
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { createClient } from "@libsql/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-function getDatabaseUrl(): string {
-  const bundledDb = path.join(process.cwd(), "prisma", "dev.db");
-  const tmpDb = "/tmp/dev.db";
+function createPrismaClient() {
+  const url = process.env.TURSO_DATABASE_URL;
+  const authToken = process.env.TURSO_AUTH_TOKEN;
 
-  // On Vercel (and similar serverless platforms), /var/task is read-only at runtime.
-  // We must copy the seeded DB to /tmp (writable) before Prisma can write to it.
-  const isServerless =
-    !!process.env.VERCEL ||
-    !!process.env.AWS_LAMBDA_FUNCTION_NAME ||
-    process.env.NODE_ENV === "production";
-
-  if (isServerless) {
-    try {
-      // Copy bundled seeded DB → /tmp on every cold start for write access
-      if (fs.existsSync(bundledDb)) {
-        fs.copyFileSync(bundledDb, tmpDb);
-        return `file:${tmpDb}`;
-      }
-    } catch (e) {
-      console.error("[db] Failed to copy DB to /tmp:", e);
-    }
-    // Fallback: use bundled path (reads work, writes will fail — last resort)
-    return `file:${bundledDb}`;
+  if (url && url.startsWith("libsql://")) {
+    // ── Production / Vercel: use Turso hosted database ──────────────────────
+    const libsql = createClient({ url, authToken });
+    const adapter = new PrismaLibSQL(libsql);
+    return new PrismaClient({ adapter, log: ["error"] });
   }
 
-  // ── Local development ──────────────────────────────────────────
-  const envUrl = process.env.DATABASE_URL;
-  if (envUrl && !envUrl.match(/^file:\.\//)) {
-    return envUrl;
-  }
-
-  // Scan for the dev.db file relative to cwd
-  const candidates = [
-    path.join(process.cwd(), "prisma", "dev.db"),
-    path.join(process.cwd(), "dev.db"),
-  ];
-  for (const candidate of candidates) {
-    try {
-      if (fs.existsSync(candidate)) return `file:${candidate}`;
-    } catch {
-      // ignore
-    }
-  }
-  return `file:${path.join(process.cwd(), "prisma", "dev.db")}`;
-}
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+  // ── Local development: fall back to local SQLite file ───────────────────
+  const { DATABASE_URL } = process.env;
+  return new PrismaClient({
     datasources: {
       db: {
-        url: getDatabaseUrl(),
+        url: DATABASE_URL || "file:./prisma/dev.db",
       },
     },
-    log: ["error"],
+    log: ["error", "warn"],
   });
+}
 
-// Cache globally — prevents a new PrismaClient on every hot-reload/warm invocation
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+
+// Cache globally to prevent connection exhaustion on hot-reload
 globalForPrisma.prisma = prisma;

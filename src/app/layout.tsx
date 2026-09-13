@@ -76,6 +76,16 @@ export const metadata: Metadata = {
     creator: "@anantyadav",
     images: [`${SITE_URL}/api/og?title=Anant+Yadav&subtitle=Author+•+Poet+•+Writer+•+Thinker`],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
   robots: {
     index: true,
     follow: true,

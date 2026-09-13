@@ -19,8 +19,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/(.*)',
-        destination: 'https://authoranant.ezy1.site/$1',
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'authoranantyadav.vercel.app',
+          },
+        ],
+        destination: 'https://authoranant.ezy1.site/:path*',
         permanent: true,
       },
     ];

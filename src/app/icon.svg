@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="100%" stop-color="#0c0a09"/>
+    </linearGradient>
+    <linearGradient id="border-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="feather-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Circular background badge -->
+  <circle cx="256" cy="256" r="236" fill="url(#bg-grad)" stroke="url(#border-grad)" stroke-width="20"/>
+
+  <!-- Subtle interior ambient ring -->
+  <circle cx="256" cy="256" r="222" fill="none" stroke="#fbbf24" stroke-width="2" stroke-opacity="0.2"/>
+
+  <!-- Centered Feather Quill Icon (exact lucide-react feather geometry) -->
+  <!-- 24x24 viewBox scaled by 12.8, translated to center inside 512x512 -->
+  <g transform="translate(102, 102) scale(12.8)"
+     fill="none"
+     stroke="url(#feather-grad)"
+     stroke-width="2.2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     filter="url(#glow)">
+    <path d="M14.086 18.412A2 2 0 0112.67 19H5v-7.672a2 2 0 01.586-1.414L11.75 3.75a6 6 0 118.49 8.49z"/>
+    <path d="M16 8 2 22"/>
+    <path d="M17.488 15H9"/>
+  </g>
+</svg>

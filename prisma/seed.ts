@@ -72,7 +72,7 @@ Rooted in rich literary traditions while engaging directly with modern existenti
         instagram: "https://instagram.com/",
         linkedin: "https://linkedin.com/in/",
         goodreads: "https://goodreads.com/",
-        substack: "https://substack.com/",
+        substack: "https://substack.com/@authoranant/",
         amazon: "https://amazon.com/author/",
       }),
       isPublished: true,
@@ -316,6 +316,45 @@ how to seek the spring.`,
   // 6. Writings / Essays
   const writings = [
     {
+      title: "Don't Make Women Goddesses, Treat Them Like Humans",
+      slug: "dont-make-women-goddesses-treat-them-like-humans",
+      subtitle: "Calling a woman Devi costs nothing. Giving her the rights a man already has costs a great deal more.",
+      content: `## The Burden of the Pedestal
+
+Calling a woman Devi costs nothing. Giving her the rights a man already has costs a great deal more.
+
+To elevate a human being onto an unreachable altar is often the most sophisticated and socially sanctioned mechanism to deny them their fundamental earthly dignities. When we place women on pedestals, we do not honor them—we disarm their humanity, their anger, their fallibility, and their autonomous agency.
+
+> "A goddess requires worship and silent perfection; a human being requires equal wages, safe streets, physical autonomy, and unconditioned liberty."
+
+### The False Sanctuary of Reverence
+
+Deification is not liberation; it is containment. Throughout history, societies that claim the highest ceremonial reverence for symbolic feminine entities frequently exhibit the most systemic apathy towards actual living women.
+
+* **Ceremonial Reverence** grants ornamental status while withholding systemic power.
+* **Human Dignity** guarantees economic parity, bodily self-determination, and legal justice.
+
+When a society demands that women embody goddess-like patience, purity, and sacrifice, any deviation from that impossible ideal is met with moral condemnation. Human beings get angry; human beings make mistakes; human beings demand their fair share of the world.
+
+### Reclaiming the Ordinary and the Free
+
+It is time to dismantle the pedestal. Women do not need to be worshipped as cosmic mother-figures or divine incarnations. They need what every human being is intrinsically owed: the right to walk without fear, speak without permission, work without discrimination, and live with absolute, unnegotiated freedom.`,
+      excerpt: "Calling a woman Devi costs nothing. Giving her the rights a man already has costs a great deal more. An essay on dismantling false reverence in pursuit of genuine human dignity.",
+      category: "Article",
+      author: "Anant Yadav",
+      tags: JSON.stringify(["human rights", "equality", "society", "philosophy"]),
+      coverImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80",
+      pdfUrl: "/uploads/pdfs/dont-make-women-goddesses-treat-them-like-humans.pdf",
+      pdfFilename: "dont-make-women-goddesses-treat-them-like-humans.pdf",
+      pdfSize: 1550,
+      readingTime: 5,
+      featured: true,
+      published: true,
+      publishDate: "2026-09-29",
+      seoTitle: "Don't Make Women Goddesses, Treat Them Like Humans | Anant Yadav",
+      seoDescription: "An urgent essay by Anant Yadav on dismantling patriarchal deification in favor of real human rights, bodily autonomy, and equal dignity.",
+    },
+    {
       title: "On the Necessity of Solitude in Modern Thought",
       slug: "necessity-of-solitude",
       subtitle: "Why uninterrupted contemplation is the lifeblood of human creativity",
@@ -341,8 +380,12 @@ To reclaim solitude is an act of cultural rebellion. It requires setting boundar
 In doing so, we rediscover the quiet dignity of reading deeply, thinking patiently, and writing with unhurried authenticity.`,
       excerpt: "Solitude is not the absence of others; it is the presence of oneself. In an age of perpetual connectivity, reclaiming stillness is an act of creative survival.",
       category: "Philosophy",
+      author: "Anant Yadav",
       tags: JSON.stringify(["solitude", "philosophy", "modernity", "creativity"]),
       coverImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+      pdfUrl: null,
+      pdfFilename: null,
+      pdfSize: null,
       readingTime: 5,
       featured: true,
       published: true,
@@ -367,10 +410,14 @@ Precision in language is not merely an aesthetic preference; it is an act of eth
 When we write carelessly, we blur reality. When we write with rigor, we bring the world into sharp, luminous focus.`,
       excerpt: "The author's task is not to add to the volume of noise, but to elevate words back to their sacred weight.",
       category: "Literary Craft",
+      author: "Anant Yadav",
       tags: JSON.stringify(["writing", "literature", "language", "craft"]),
       coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
+      pdfUrl: null,
+      pdfFilename: null,
+      pdfSize: null,
       readingTime: 4,
-      featured: true,
+      featured: false,
       published: true,
       publishDate: "2026-02-24",
       seoTitle: "The Weight of the Written Word | Essay by Anant Yadav",

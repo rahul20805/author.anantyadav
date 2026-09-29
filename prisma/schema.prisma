@@ -100,11 +100,15 @@ model Writing {
   title          String
   slug           String   @unique
   subtitle       String?
-  content        String   // Markdown / Rich text
+  content        String   @default("") // Markdown / Rich text (optional if PDF is attached)
   excerpt        String?
   category       String   @default("Essay") // Essay, Article, Reflection, Literary Note, Philosophy
+  author         String   @default("Anant Yadav")
   tags           String   @default("[]") // JSON string
   coverImage     String?
+  pdfUrl         String?
+  pdfFilename    String?
+  pdfSize        Int?     // Size in bytes
   readingTime    Int      @default(5) // in minutes
   featured       Boolean  @default(false)
   published      Boolean  @default(true)

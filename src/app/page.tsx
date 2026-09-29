@@ -2,9 +2,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
 import { QuoteCard } from "@/components/QuoteCard";
-import { Feather, BookOpen, ArrowRight, Sparkles, Clock, Compass, Calendar, ChevronRight, Star } from "lucide-react";
+import {
+  Feather,
+  BookOpen,
+  ArrowRight,
+  Sparkles,
+  Clock,
+  Compass,
+  Calendar,
+  ChevronRight,
+  Star,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
+import { SubstackIcon } from "@/components/BrandIcons";
 
-export const revalidate = 60; // ISR 60s
+export const dynamic = "force-dynamic";
+export const revalidate = 0; // Fresh updates on every request
 
 export default async function HomePage() {
   const profile = await prisma.authorProfile.findFirst({ where: { id: "default" } });
@@ -36,20 +50,35 @@ export default async function HomePage() {
   return (
     <div className="space-y-28 sm:space-y-36 pb-20">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[88vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-8 sm:pt-14 overflow-hidden">
         {/* Ambient atmospheric glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
         <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-amber-700/5 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="max-w-4xl mx-auto text-center space-y-7">
+          {/* Official Author Crest & Insignia */}
+          <div className="flex justify-center animate-in fade-in zoom-in-95 duration-700">
+            <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-2xl gold-border-glow hover:scale-105 transition-transform duration-500 bg-stone-950 p-1">
+              <div className="relative w-full h-full rounded-full overflow-hidden">
+                <Image
+                  src="/images/author-emblem.jpg"
+                  alt="Anant Yadav - Author, Poet, Writer Official Emblem"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Subtle Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-900/90 border border-stone-800 text-stone-300 text-xs font-mono tracking-widest uppercase animate-in fade-in slide-in-from-bottom-3 duration-700">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-900/90 border border-stone-800 text-stone-300 text-xs font-mono tracking-widest uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             Official Literary Home
           </div>
 
           {/* Author Name Heading */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h1 className="font-serif-literary text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-stone-100 leading-[1.08]">
               {profile?.name || "Anant Yadav"}
             </h1>
@@ -64,21 +93,30 @@ export default async function HomePage() {
           </p>
 
           {/* Call-to-action buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2 font-sans-ui">
             <Link
               href="/books"
-              className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-medium px-7 py-3.5 rounded-xl text-sm flex items-center gap-2.5 transition-all shadow-xl hover:shadow-amber-600/20 font-sans-ui"
+              className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-medium px-6 sm:px-7 py-3.5 rounded-xl text-sm flex items-center gap-2.5 transition-all shadow-xl hover:shadow-amber-600/20"
             >
               <BookOpen className="w-4 h-4" />
               Explore Books
             </Link>
             <Link
               href="/poetry"
-              className="bg-stone-900/80 hover:bg-stone-800 text-stone-200 border border-stone-800 hover:border-amber-500/40 font-medium px-7 py-3.5 rounded-xl text-sm flex items-center gap-2.5 transition-all font-sans-ui"
+              className="bg-stone-900/80 hover:bg-stone-800 text-stone-200 border border-stone-800 hover:border-amber-500/40 font-medium px-6 sm:px-7 py-3.5 rounded-xl text-sm flex items-center gap-2.5 transition-all"
             >
               <Feather className="w-4 h-4 text-amber-400" />
               Read Poetry
             </Link>
+            <a
+              href="https://substack.com/@authoranant/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-stone-900/80 hover:bg-stone-800 text-stone-200 border border-stone-800 hover:border-amber-500/40 font-medium px-5 sm:px-6 py-3.5 rounded-xl text-sm flex items-center gap-2.5 transition-all group"
+            >
+              <SubstackIcon className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+              Substack Essays
+            </a>
             <Link
               href="/about"
               className="text-stone-400 hover:text-stone-100 text-sm flex items-center gap-1.5 px-4 py-3.5 transition-colors"
@@ -123,13 +161,21 @@ export default async function HomePage() {
             <p className="text-stone-400 leading-relaxed text-sm">
               {profile?.philosophy}
             </p>
-            <div className="pt-4 flex items-center gap-6">
+            <div className="pt-4 flex flex-wrap items-center gap-6">
               <Link
                 href="/about"
                 className="text-amber-300 hover:text-amber-200 font-medium text-sm flex items-center gap-2 group"
               >
                 Read Full Biography <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
+              <a
+                href="https://substack.com/@authoranant/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-400 hover:text-amber-300 font-medium text-sm flex items-center gap-1.5"
+              >
+                <SubstackIcon className="w-3.5 h-3.5" /> Follow on Substack
+              </a>
               <Link
                 href="/contact"
                 className="text-stone-400 hover:text-stone-200 text-sm"
@@ -289,10 +335,10 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-800 pb-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-widest text-amber-400 flex items-center gap-2">
-                <span className="w-6 h-px bg-amber-500/60" /> Long-form Prose
+                <span className="w-6 h-px bg-amber-500/60" /> Long-form Prose &amp; Papers
               </span>
               <h2 className="font-serif-literary text-3xl sm:text-4xl font-bold text-stone-100 mt-2">
-                Essays &amp; Reflections
+                Essays &amp; Articles
               </h2>
             </div>
             <Link
@@ -323,11 +369,30 @@ export default async function HomePage() {
                     <p className="text-xs text-stone-400 italic">{writing.subtitle}</p>
                   )}
                   <p className="text-sm text-stone-300 line-clamp-3 leading-relaxed">
-                    {writing.excerpt || writing.content.slice(0, 160)}
+                    {writing.excerpt || (writing.content ? writing.content.slice(0, 160) : "")}
                   </p>
+                  <div className="pt-2 text-xs font-mono text-stone-400 flex items-center gap-2">
+                    <span>By {writing.author || "Anant Yadav"}</span>
+                    {writing.publishDate && (
+                      <>
+                        <span>|</span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-amber-500" /> {writing.publishDate}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="pt-6 border-t border-stone-800/80 flex items-center justify-between">
-                  <span className="text-xs text-stone-400 font-mono">{writing.publishDate || "Recent Essay"}</span>
+                <div className="pt-6 border-t border-stone-800/80 flex items-center justify-between text-xs font-mono">
+                  <div>
+                    {writing.pdfUrl ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[11px] font-bold uppercase tracking-wider">
+                        <FileText className="w-3 h-3" /> PDF
+                      </span>
+                    ) : (
+                      <span className="text-stone-400 text-[11px]">Essay</span>
+                    )}
+                  </div>
                   <Link
                     href={`/writings/${writing.slug}`}
                     className="text-xs font-mono uppercase tracking-wider text-amber-400 hover:text-amber-300 flex items-center gap-1.5 font-semibold"
@@ -341,7 +406,50 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 7. UPCOMING EVENTS BRIEF */}
+      {/* 7. DEDICATED SUBSTACK SPOTLIGHT BANNER */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-3xl bg-gradient-to-br from-stone-900/90 via-stone-900/60 to-amber-950/30 border border-stone-800 p-8 sm:p-12 overflow-hidden shadow-2xl backdrop-blur-sm">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-8 space-y-4">
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3.5 py-1 rounded-full border border-amber-500/20">
+                <SubstackIcon className="w-3.5 h-3.5" /> Weekly Literary Column
+              </div>
+              <h2 className="font-serif-literary text-3xl sm:text-4xl font-bold text-stone-100">
+                Read Anant Yadav on Substack
+              </h2>
+              <p className="text-stone-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                Join readers worldwide receiving unhurried essays, philosophical contemplations, poetry previews, and cultural commentary delivered straight to your inbox.
+              </p>
+              <div className="pt-2">
+                <a
+                  href="https://substack.com/@authoranant/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-stone-950 font-semibold px-6 py-3 rounded-xl text-xs font-mono uppercase tracking-wider transition-all shadow-lg hover:shadow-amber-600/20"
+                >
+                  <SubstackIcon className="w-4 h-4" />
+                  Read &amp; Subscribe on Substack <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            <div className="md:col-span-4 flex justify-center md:justify-end">
+              <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-2xl gold-border-glow bg-stone-950 p-1">
+                <div className="relative w-full h-full rounded-full overflow-hidden">
+                  <Image
+                    src="/images/author-emblem.jpg"
+                    alt="Anant Yadav Emblem"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. UPCOMING EVENTS BRIEF */}
       {upcomingEvents.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex items-center justify-between border-b border-stone-800 pb-4">

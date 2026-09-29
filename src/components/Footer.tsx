@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Feather, BookOpen, Mail, Shield, FileText } from "lucide-react";
-import { TwitterIcon, InstagramIcon, LinkedInIcon } from "./BrandIcons";
+import { TwitterIcon, InstagramIcon, LinkedInIcon, SubstackIcon } from "./BrandIcons";
 import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
@@ -15,9 +15,19 @@ export function Footer() {
           <h3 className="font-serif-literary text-2xl sm:text-3xl font-bold text-stone-100 tracking-tight">
             The Solitude Dispatch
           </h3>
-          <p className="text-sm text-stone-400 max-w-md mx-auto mt-2 mb-8 leading-relaxed">
+          <p className="text-sm text-stone-400 max-w-md mx-auto mt-2 mb-6 leading-relaxed">
             Letters on literature, new poems, philosophical inquiries, and book updates directly from the author&apos;s desk.
           </p>
+          <div className="mb-6 flex justify-center">
+            <a
+              href="https://substack.com/@authoranant/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-mono uppercase tracking-wider transition-all"
+            >
+              <SubstackIcon className="w-3.5 h-3.5" /> Read &amp; Follow on Substack &rarr;
+            </a>
+          </div>
           <NewsletterForm />
         </div>
 
@@ -34,7 +44,17 @@ export function Footer() {
             <p className="text-xs text-stone-400 leading-relaxed">
               Author, poet, and philosophical essayist exploring the contours of solitude, human consciousness, and contemporary literary craft.
             </p>
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-2.5 pt-2 flex-wrap">
+              <a
+                href="https://substack.com/@authoranant/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-amber-400 hover:border-amber-500/40 transition-colors"
+                aria-label="Substack Column"
+                title="Substack"
+              >
+                <SubstackIcon className="w-3.5 h-3.5" />
+              </a>
               <a
                 href="https://twitter.com/"
                 target="_blank"

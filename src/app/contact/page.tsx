@@ -1,6 +1,7 @@
 import { generateSeoMetadata } from "@/lib/seo";
 import { ContactForm } from "./ContactForm";
-import { Mail, Sparkles, MapPin } from "lucide-react";
+import { Mail, Sparkles, MapPin, ExternalLink } from "lucide-react";
+import { SubstackIcon } from "@/components/BrandIcons";
 import { prisma } from "@/lib/db";
 
 export async function generateMetadata() {
@@ -63,6 +64,24 @@ export default async function ContactPage() {
                   </div>
                 </div>
               )}
+
+              {/* Substack link */}
+              <div className="flex items-start gap-3 pt-2">
+                <div className="w-4 h-4 text-amber-400 mt-0.5 shrink-0 flex items-center justify-center">
+                  <SubstackIcon className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="text-stone-400 block font-mono">Substack Publication</span>
+                  <a
+                    href="https://substack.com/@authoranant/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-400 hover:text-amber-300 font-medium inline-flex items-center gap-1 mt-0.5"
+                  >
+                    substack.com/@authoranant <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="pt-4 border-t border-stone-800/80 text-[11px] text-stone-400 leading-relaxed">

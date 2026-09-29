@@ -94,7 +94,7 @@ export function getAuthorSchema() {
       "https://instagram.com/",
       "https://linkedin.com/in/",
       "https://goodreads.com/",
-      "https://substack.com/",
+      "https://substack.com/@authoranant/",
     ],
     description:
       "Anant Yadav is an Indian author, poet, and contemplative essayist exploring human solitude, consciousness, and modern literary expression.",

@@ -420,6 +420,10 @@ ${senderEmail}`;
             name: senderName,
             email: senderEmail,
           },
+          replyTo: {
+            name: senderName,
+            email: process.env.BREVO_REPLY_TO || "newsletter@author.in",
+          },
           to: [
             {
               email: cleanEmail,

@@ -38,6 +38,7 @@ async function migrateTurso() {
     "ALTER TABLE Writing ADD COLUMN pdfUrl TEXT",
     "ALTER TABLE Writing ADD COLUMN pdfFilename TEXT",
     "ALTER TABLE Writing ADD COLUMN pdfSize INTEGER",
+    "ALTER TABLE Book ADD COLUMN images TEXT DEFAULT '[]'",
   ];
 
   for (const sql of migrations) {

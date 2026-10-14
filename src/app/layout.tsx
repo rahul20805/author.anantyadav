@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ToastProvider } from "@/components/ToastContext";
+import { BookLaunchModal } from "@/components/BookLaunchModal";
 import { getAuthorSchema, SITE_URL } from "@/lib/seo";
 
 const newsreader = Newsreader({
@@ -115,6 +116,7 @@ export default function RootLayout({
         <ToastProvider>
           <Navbar />
           <main className="min-h-screen pt-20">{children}</main>
+          <BookLaunchModal />
           <Footer />
         </ToastProvider>
       </body>

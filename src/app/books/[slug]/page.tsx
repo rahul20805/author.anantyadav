@@ -4,7 +4,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { generateSeoMetadata, getBookSchema, getBreadcrumbSchema } from "@/lib/seo";
 import { ShareButtons } from "@/components/ShareButtons";
-import { Star, ExternalLink, MessageSquare, Quote, ArrowLeft } from "lucide-react";
+import { BookImageGallery } from "@/components/BookImageGallery";
+import { Star, ExternalLink, MessageSquare, Quote, ArrowLeft, ShoppingBag } from "lucide-react";
 import { BookReviewForm } from "./BookReviewForm";
 
 interface BookPageProps {
@@ -59,6 +60,18 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
     purchaseLinks = [];
   }
 
+  let galleryImages: string[] = [];
+  try {
+    if (book.images) {
+      galleryImages = JSON.parse(book.images);
+    }
+  } catch {
+    galleryImages = [];
+  }
+  if (!galleryImages.length && book.coverImage) {
+    galleryImages = [book.coverImage];
+  }
+
   const bookJsonLd = getBookSchema({
     title: book.title,
     slug: book.slug,
@@ -102,42 +115,67 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
 
       {/* Hero Showcase Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 items-start">
-        {/* Book Cover Column */}
+        {/* Book Cover Column with Amazon-style Scrollable Gallery */}
         <div className="md:col-span-5 space-y-6">
-          <div className="relative aspect-[2/3] rounded-3xl overflow-hidden border border-stone-700/80 shadow-2xl bg-stone-900">
-            <Image
-              src={book.coverImage || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"}
-              alt={book.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 450px"
-              priority
-            />
-          </div>
+          <BookImageGallery title={book.title} images={galleryImages} />
 
           {/* Quick Purchase Links */}
           {purchaseLinks.length > 0 && (
             <div className="p-6 rounded-2xl bg-stone-900/60 border border-stone-800 space-y-3">
-              <span className="text-xs font-mono uppercase tracking-widest text-stone-400 block mb-2">
-                Acquire / Read
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono uppercase tracking-widest text-stone-400 block">
+                  Available Editions
+                </span>
+                <span className="text-xs font-mono text-amber-400 font-semibold">
+                  Direct Store Links
+                </span>
+              </div>
               <div className="flex flex-col gap-2.5">
-                {purchaseLinks.map((link, idx) => (
-                  <a
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center justify-between px-5 py-3 rounded-xl text-sm font-medium transition-all ${
-                      link.isPrimary
-                        ? "bg-amber-600 hover:bg-amber-500 text-stone-950 font-semibold shadow-lg"
-                        : "bg-stone-800/80 hover:bg-stone-700 text-stone-200 border border-stone-700"
-                    }`}
-                  >
-                    <span>{link.label}</span>
-                    <ExternalLink className="w-4 h-4 opacity-80" />
-                  </a>
-                ))}
+                {purchaseLinks.map((link, idx) => {
+                  const labelLower = link.label.toLowerCase();
+                  const isAmazon = labelLower.includes("amazon");
+                  const isFlipkart = labelLower.includes("flipkart");
+                  const isGoogle = labelLower.includes("google") || labelLower.includes("play");
+
+                  let btnStyle = "bg-stone-800/80 hover:bg-stone-700 text-stone-200 border border-stone-700";
+                  let brandBadge = null;
+
+                  if (isAmazon) {
+                    btnStyle = "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-bold shadow-lg shadow-amber-950/30";
+                    brandBadge = "Paperback";
+                  } else if (isFlipkart) {
+                    btnStyle = "bg-[#2874F0] hover:bg-[#1a5fcd] text-white font-bold shadow-lg shadow-blue-950/30";
+                    brandBadge = "Fast Delivery";
+                  } else if (isGoogle) {
+                    btnStyle = "bg-emerald-600 hover:bg-emerald-500 text-stone-950 font-bold shadow-lg shadow-emerald-950/30";
+                    brandBadge = "E-Book";
+                  } else if (link.isPrimary) {
+                    btnStyle = "bg-amber-600 hover:bg-amber-500 text-stone-950 font-semibold shadow-lg";
+                  }
+
+                  return (
+                    <a
+                      key={idx}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center justify-between px-5 py-3.5 rounded-xl text-sm transition-all group ${btnStyle}`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        {isAmazon && <ShoppingBag className="w-4 h-4 text-stone-950" />}
+                        {isFlipkart && <span className="font-sans font-black text-yellow-300 text-sm">fk</span>}
+                        {isGoogle && <span className="font-mono text-xs">▶</span>}
+                        <span>{link.label}</span>
+                        {brandBadge && (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/20 uppercase tracking-wider">
+                            {brandBadge}
+                          </span>
+                        )}
+                      </div>
+                      <ExternalLink className="w-4 h-4 opacity-80 group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           )}

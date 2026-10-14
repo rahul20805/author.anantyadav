@@ -19,6 +19,7 @@ interface Book {
   pageCount?: number | null;
   publicationDate?: string | null;
   coverImage?: string | null;
+  images?: string | null;
   purchaseLinks: string;
   rating: number;
   featured: boolean;
@@ -47,6 +48,7 @@ export default function AdminBooksPage() {
   const [pageCount, setPageCount] = useState<string>("");
   const [publicationDate, setPublicationDate] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [images, setImages] = useState("[]");
   const [purchaseLinks, setPurchaseLinks] = useState('[{"label":"Amazon","url":"https://amazon.com","isPrimary":true}]');
   const [rating, setRating] = useState("5.0");
   const [featured, setFeatured] = useState(false);
@@ -85,6 +87,7 @@ export default function AdminBooksPage() {
     setPageCount("");
     setPublicationDate("");
     setCoverImage("");
+    setImages("[]");
     setPurchaseLinks('[{"label":"Amazon","url":"https://amazon.com","isPrimary":true}]');
     setRating("5.0");
     setFeatured(false);
@@ -107,6 +110,7 @@ export default function AdminBooksPage() {
     setPageCount(b.pageCount ? String(b.pageCount) : "");
     setPublicationDate(b.publicationDate || "");
     setCoverImage(b.coverImage || "");
+    setImages(b.images || "[]");
     setPurchaseLinks(b.purchaseLinks);
     setRating(String(b.rating));
     setFeatured(b.featured);
@@ -132,6 +136,7 @@ export default function AdminBooksPage() {
       pageCount: pageCount ? parseInt(pageCount) : null,
       publicationDate,
       coverImage,
+      images,
       purchaseLinks,
       rating: parseFloat(rating) || 0,
       featured,
@@ -433,6 +438,17 @@ export default function AdminBooksPage() {
                   onChange={(e) => setCoverImage(e.target.value)}
                   placeholder="https://..."
                   className="w-full bg-stone-900 border border-stone-800 rounded-xl p-3 text-stone-200 focus:outline-none focus:border-amber-500/60"
+                />
+              </div>
+
+              <div>
+                <label className="block text-stone-300 uppercase font-mono mb-1">Gallery Images (JSON Array for Amazon-style scroller)</label>
+                <input
+                  type="text"
+                  value={images}
+                  onChange={(e) => setImages(e.target.value)}
+                  placeholder='["/images/books/..."]'
+                  className="w-full bg-stone-900 border border-stone-800 rounded-xl p-3 text-stone-200 focus:outline-none focus:border-amber-500/60 font-mono text-xs"
                 />
               </div>
 

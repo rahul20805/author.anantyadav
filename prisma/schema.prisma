@@ -60,6 +60,7 @@ model Book {
   pageCount       Int?
   publicationDate String?
   coverImage      String?
+  images          String?  @default("[]") // JSON string: ["/images/books/jaa-rahi-ho/front-cover.jpg", ...]
   purchaseLinks   String   @default("[]") // JSON string: [{ "label": "Amazon", "url": "https://amazon.com", "isPrimary": true }]
   rating          Float    @default(0.0)
   reviewCount     Int      @default(0)

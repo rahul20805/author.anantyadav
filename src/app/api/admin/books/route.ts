@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
         pageCount: data.pageCount ? parseInt(data.pageCount) : null,
         publicationDate: data.publicationDate || null,
         coverImage: data.coverImage || null,
+        images: typeof data.images === "string" ? data.images : JSON.stringify(data.images || []),
         purchaseLinks: typeof data.purchaseLinks === "string" ? data.purchaseLinks : JSON.stringify(data.purchaseLinks || []),
         rating: data.rating ? parseFloat(data.rating) : 0,
         featured: Boolean(data.featured),

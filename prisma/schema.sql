@@ -49,6 +49,7 @@ CREATE TABLE "Book" (
     "pageCount" INTEGER,
     "publicationDate" TEXT,
     "coverImage" TEXT,
+    "images" TEXT DEFAULT '[]',
     "purchaseLinks" TEXT NOT NULL DEFAULT '[]',
     "rating" REAL NOT NULL DEFAULT 0.0,
     "reviewCount" INTEGER NOT NULL DEFAULT 0,

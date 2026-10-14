@@ -8,9 +8,9 @@ export const revalidate = 60;
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: "Books by Anant Yadav | Poetry Collections & Philosophical Works",
+    title: "Books by Anant Yadav | Jaa Rahi Ho, Chup Mat Raha Karo & Poetry Collections",
     description:
-      "Explore the published books and collections by Anant Yadav, including 'Echoes of the Unspoken' and 'The Architecture of Silence'.",
+      "Explore published and upcoming books by Indian author and poet Anant Yadav, including 'Jaa Rahi Ho' (जा रही हो?), 'Chup Mat Raha Karo' (चुप मत रहा करो), and 'Apni Jhalak Ye Zindagi'. Direct ordering on Amazon, Flipkart & Kathaankan.",
     path: "/books",
   });
 }

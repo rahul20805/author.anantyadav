@@ -8,9 +8,9 @@ export const revalidate = 0;
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: "Writings & Essays | Anant Yadav",
+    title: "Philosophical Essays & Articles | Anant Yadav — Author & Thinker",
     description:
-      "Essays, philosophical reflections, published articles, and downloadable PDF papers by author Anant Yadav exploring human consciousness, ethics, solitude, and literature.",
+      "Essays, philosophical reflections, published articles, and downloadable PDF papers by Indian author and thinker Anant Yadav exploring human consciousness, ethics, solitude, and contemporary literature.",
     path: "/writings",
   });
 }

@@ -5,7 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ToastProvider } from "@/components/ToastContext";
 import { BookLaunchModal } from "@/components/BookLaunchModal";
-import { getAuthorSchema, SITE_URL } from "@/lib/seo";
+import { getAuthorSchema, getWebSiteSchema, DEFAULT_SITE_KEYWORDS, SITE_URL } from "@/lib/seo";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -33,25 +34,16 @@ export const metadata: Metadata = {
     template: "%s | Anant Yadav",
   },
   description:
-    "The official website of Anant Yadav: Explore published books, contemporary poetry, philosophical essays, thoughts, and literary events.",
-  keywords: [
-    "Anant Yadav",
-    "Author",
-    "Poet",
-    "Writer",
-    "Thinker",
-    "Indian literature",
-    "Contemporary poetry",
-    "Philosophical essays",
-    "Books",
-    "Echoes of the Unspoken",
-    "The Architecture of Silence",
-  ],
+    "Official website of Anant Yadav: Celebrated Indian author, poet, and contemplative thinker. Explore published books including 'Jaa Rahi Ho' (जा रही हो) and 'Chup Mat Raha Karo' (चुप मत रहा करो), contemporary poetry, philosophical essays, and literary thoughts.",
+  keywords: DEFAULT_SITE_KEYWORDS,
   authors: [{ name: "Anant Yadav", url: SITE_URL }],
   creator: "Anant Yadav",
   publisher: "Anant Yadav",
   alternates: {
     canonical: SITE_URL,
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_TOKEN || "google-site-verification=authoranant-search-console",
   },
   openGraph: {
     type: "website",
@@ -59,8 +51,8 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "Anant Yadav | Author, Poet & Thinker",
     description:
-      "Official digital home of author and poet Anant Yadav. Explore poetry collections, philosophical essays, books, and thoughts.",
-    siteName: "Anant Yadav",
+      "Official website of Anant Yadav: Explore published books including 'Jaa Rahi Ho' and 'Chup Mat Raha Karo', contemporary poetry, philosophical essays, and literary thoughts.",
+    siteName: "Anant Yadav - Author, Poet, Thinker",
     images: [
       {
         url: `${SITE_URL}/api/og?title=Anant+Yadav&subtitle=Author+•+Poet+•+Writer+•+Thinker`,
@@ -73,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Anant Yadav | Author, Poet & Thinker",
-    description: "Official digital home of author and poet Anant Yadav.",
+    description: "Official digital home of author and poet Anant Yadav. Explore poetry collections, philosophical essays, books, and thoughts.",
     creator: "@anantyadav",
     images: [`${SITE_URL}/api/og?title=Anant+Yadav&subtitle=Author+•+Poet+•+Writer+•+Thinker`],
   },
@@ -90,6 +82,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -99,6 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const authorJsonLd = getAuthorSchema();
+  const webSiteJsonLd = getWebSiteSchema();
 
   return (
     <html
@@ -111,6 +111,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(authorJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+        />
+        <GoogleAnalytics />
       </head>
       <body className="antialiased selection:bg-amber-500/30 selection:text-amber-200">
         <ToastProvider>

@@ -21,7 +21,18 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true });
+    // Send automated notification/confirmation email from newsletter@author.in
+    try {
+      const { sendNewsletterWelcomeEmail } = await import("@/lib/email");
+      await sendNewsletterWelcomeEmail({
+        toEmail: cleanEmail,
+        recipientName: name || null,
+      });
+    } catch (mailError) {
+      console.warn("Could not send newsletter welcome email:", mailError);
+    }
+
+    return NextResponse.json({ success: true, message: "Subscribed successfully! Confirmation email sent." });
   } catch (error) {
     console.error("Newsletter error:", error);
     return NextResponse.json({ error: "Failed to subscribe" }, { status: 500 });

@@ -16,9 +16,19 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { SubstackIcon } from "@/components/BrandIcons";
+import { generateSeoMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0; // Fresh updates on every request
+
+export async function generateMetadata() {
+  return generateSeoMetadata({
+    title: "Anant Yadav | Author, Poet, Writer & Thinker — Official Literary Home",
+    description:
+      "Official digital home of celebrated Indian author, poet, and thinker Anant Yadav. Explore published books including 'Jaa Rahi Ho' (जा रही हो) and 'Chup Mat Raha Karo' (चुप मत रहा करो), contemporary Hindi poetry, philosophical essays, and literary reflections.",
+    path: "/",
+  });
+}
 
 export default async function HomePage() {
   const profile = await prisma.authorProfile.findFirst({ where: { id: "default" } });

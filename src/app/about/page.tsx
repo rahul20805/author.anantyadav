@@ -8,9 +8,9 @@ export const revalidate = 60;
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: "About Anant Yadav | Author, Poet & Thinker",
+    title: "About Anant Yadav | Author, Poet & Thinker — Biography & Philosophy",
     description:
-      "Learn about Indian author, poet, and philosopher Anant Yadav: biography, literary philosophy, publications, and artistic statement.",
+      "Explore the literary journey, philosophical investigations, and published books of Indian author and poet Anant Yadav, including 'Jaa Rahi Ho' (जा रही हो) and 'Chup Mat Raha Karo' (चुप मत रहा करो).",
     path: "/about",
   });
 }

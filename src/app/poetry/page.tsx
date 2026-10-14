@@ -7,9 +7,9 @@ export const revalidate = 60;
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: "Poetry Archive | Verses by Anant Yadav",
+    title: "Contemporary Poetry by Anant Yadav | Hindi Poems, Solitude & Love",
     description:
-      "A curated archive of contemporary, contemplative, and philosophical poems by Anant Yadav. Explore themes of solitude, silence, and memory.",
+      "Explore contemporary Hindi poetry and verses by Indian poet Anant Yadav. Intimate stanzas exploring solitude, unsaid emotions, love, and human longing.",
     path: "/poetry",
   });
 }

@@ -7,6 +7,38 @@ export const SITE_URL =
   "https://authoranant.in";
 
 
+export const DEFAULT_SITE_KEYWORDS = [
+  "Anant Yadav",
+  "Author Anant Yadav",
+  "Poet Anant Yadav",
+  "Writer Anant Yadav",
+  "Thinker Anant Yadav",
+  "author",
+  "poet",
+  "writer",
+  "thinker",
+  "Indian literature",
+  "contemporary poetry",
+  "essays",
+  "books",
+  "philosophy",
+  "jaa rahi ho",
+  "जा रही हो",
+  "chup mat raha karo",
+  "चुप मत रहा करो",
+  "apni jhalak ye zindagi",
+  "अपनी झलक ये ज़िंदगी",
+  "The Solitude Dispatch",
+  "Hindi poetry",
+  "contemporary Indian literature",
+  "philosophical essays",
+  "Hindi literature",
+  "Anant Yadav books",
+  "Anant Yadav poems",
+  "Shivija Publications",
+  "Kathaankan Publications",
+];
+
 export function generateSeoMetadata({
   title,
   description,
@@ -15,7 +47,7 @@ export function generateSeoMetadata({
   type = "website",
   publishedTime,
   authors = ["Anant Yadav"],
-  keywords = ["Anant Yadav", "Author", "Poet", "Writer", "Thinker", "Indian Literature", "Poetry", "Philosophy", "Essays"],
+  keywords = DEFAULT_SITE_KEYWORDS,
 }: {
   title: string;
   description: string;
@@ -42,6 +74,9 @@ export function generateSeoMetadata({
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical: canonicalUrl,
+    },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GSC_TOKEN || "google-site-verification=authoranant-search-console",
     },
     openGraph: {
       title,
@@ -81,12 +116,37 @@ export function generateSeoMetadata({
   };
 }
 
+export function getWebSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Anant Yadav | Author, Poet & Thinker Official Site",
+    alternateName: ["Anant Yadav Official", "Author Anant Yadav", "अनंत यादव"],
+    url: SITE_URL,
+    description:
+      "Official website of Anant Yadav: Celebrated Indian author, poet, and contemplative thinker. Explore published books including 'Jaa Rahi Ho' and 'Chup Mat Raha Karo', contemporary poetry, philosophical essays, and literary thoughts.",
+    author: {
+      "@type": "Person",
+      name: "Anant Yadav",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
 export function getAuthorSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Anant Yadav",
-    jobTitle: ["Author", "Poet", "Writer", "Philosophical Essayist"],
+    alternateName: ["अनंत यादव", "Author Anant Yadav", "Anant Yadav Poet", "Anant Yadav Writer"],
+    jobTitle: ["Author", "Poet", "Writer", "Thinker", "Philosophical Essayist"],
     url: SITE_URL,
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
     sameAs: [
@@ -97,14 +157,18 @@ export function getAuthorSchema() {
       "https://substack.com/@authoranant/",
     ],
     description:
-      "Anant Yadav is an Indian author, poet, and contemplative essayist exploring human solitude, consciousness, and modern literary expression.",
+      "Anant Yadav is a celebrated Indian author, poet, and contemplative thinker whose works explore human solitude, love, memory, and existential philosophy. His published works include 'Jaa Rahi Ho' (जा रही हो?), 'Chup Mat Raha Karo' (चुप मत रहा करो), and 'Apni Jhalak Ye Zindagi' (अपनी झलक ये ज़िंदगी).",
     knowsAbout: [
       "Poetry",
       "Philosophy",
-      "Literature",
+      "Indian Literature",
       "Creative Writing",
       "Contemplative Philosophy",
-      "Indian Literature",
+      "Contemporary Hindi Poetry",
+      "Essays",
+      "Jaa Rahi Ho",
+      "Chup Mat Raha Karo",
+      "The Solitude Dispatch",
     ],
   };
 }

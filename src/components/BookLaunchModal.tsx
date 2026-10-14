@@ -29,43 +29,6 @@ interface BookData {
 
 const FEATURED_BOOKS: BookData[] = [
   {
-    id: "chup-mat-raha-karo",
-    slug: "chup-mat-raha-karo",
-    title: "चुप मत रहा करो",
-    subtitle: "ये किताब उन खामोशियों की है, जो बोलना चाहती थीं...",
-    price: "₹199/-",
-    releaseTag: "Pre-Order Available • Launching November 2026",
-    badge: "Upcoming Release • Nov 2026",
-    publisher: "Kathaankan Publications",
-    quoteTitle: "“कुछ बातें जो कभी कह नहीं पाए...”",
-    quoteBody:
-      "वो शब्द बनकर इस किताब में चले आए हैं। ये किताब उन खामोशियों की है, जो बोलना चाहती थीं, उन लम्हों की है जो ठहर गए थे कहीं, और उन एहसासों की है जो अब शब्द बनकर तुम तक पहुँच रहे हैं।",
-    quoteAuthor: "— जो दिल में है, कभी-कभी उसे कह देना चाहिए।",
-    images: [
-      { url: "/images/books/chup-mat-raha-karo/front-cover.jpg", label: "Front Cover" },
-      { url: "/images/books/chup-mat-raha-karo/special-edition.png", label: "Illustrated" },
-      { url: "/images/books/chup-mat-raha-karo/back-cover.jpg", label: "Back Cover" },
-      { url: "/images/books/chup-mat-raha-karo/angle-view.jpg", label: "3D Angle" },
-      { url: "/images/books/chup-mat-raha-karo/book-mockup.jpg", label: "Showcase" },
-    ],
-    buttons: [
-      {
-        label: "Pre-Order Paperback (₹199)",
-        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
-        isPrimary: true,
-        brand: "kathaankan",
-        badgeText: "Paperback ₹199",
-      },
-      {
-        label: "Pre-Order on Amazon",
-        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
-        isPrimary: false,
-        brand: "amazon",
-        badgeText: "Pre-Booking",
-      },
-    ],
-  },
-  {
     id: "jaa-rahi-ho",
     slug: "jaa-rahi-ho",
     title: "जा रही हो?",
@@ -106,12 +69,49 @@ const FEATURED_BOOKS: BookData[] = [
       },
     ],
   },
+  {
+    id: "chup-mat-raha-karo",
+    slug: "chup-mat-raha-karo",
+    title: "चुप मत रहा करो",
+    subtitle: "ये किताब उन खामोशियों की है, जो बोलना चाहती थीं...",
+    price: "₹199/-",
+    releaseTag: "Pre-Order Available • Launching November 2026",
+    badge: "Upcoming Release • Nov 2026",
+    publisher: "Kathaankan Publications",
+    quoteTitle: "“कुछ बातें जो कभी कह नहीं पाए...”",
+    quoteBody:
+      "वो शब्द बनकर इस किताब में चले आए हैं। ये किताब उन खामोशियों की है, जो बोलना चाहती थीं, उन लम्हों की है जो ठहर गए थे कहीं, और उन एहसासों की है जो अब शब्द बनकर तुम तक पहुँच रहे हैं।",
+    quoteAuthor: "— जो दिल में है, कभी-कभी उसे कह देना चाहिए।",
+    images: [
+      { url: "/images/books/chup-mat-raha-karo/front-cover.jpg", label: "Front Cover" },
+      { url: "/images/books/chup-mat-raha-karo/special-edition.png", label: "Illustrated" },
+      { url: "/images/books/chup-mat-raha-karo/back-cover.jpg", label: "Back Cover" },
+      { url: "/images/books/chup-mat-raha-karo/angle-view.jpg", label: "3D Angle" },
+      { url: "/images/books/chup-mat-raha-karo/book-mockup.jpg", label: "Showcase" },
+    ],
+    buttons: [
+      {
+        label: "Pre-Order Paperback (₹199)",
+        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
+        isPrimary: true,
+        brand: "kathaankan",
+        badgeText: "Paperback ₹199",
+      },
+      {
+        label: "Pre-Order on Amazon",
+        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
+        isPrimary: false,
+        brand: "amazon",
+        badgeText: "Pre-Booking",
+      },
+    ],
+  },
 ];
 
 export function BookLaunchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-  const [activeBookIndex, setActiveBookIndex] = useState(0); // 0: Chup Mat Raha Karo, 1: Jaa Rahi Ho
+  const [activeBookIndex, setActiveBookIndex] = useState(0); // 0: Jaa Rahi Ho (Default), 1: Chup Mat Raha Karo
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const currentBook = FEATURED_BOOKS[activeBookIndex];
@@ -165,7 +165,7 @@ export function BookLaunchModal() {
           </span>
           <BookOpen className="w-4 h-4 text-stone-950" />
           <span className="text-xs font-serif-literary tracking-wide font-bold">
-            चुप मत रहा करो (Pre-Order Available)
+            जा रही हो? (Featured Book)
           </span>
         </button>
       )}
@@ -208,9 +208,13 @@ export function BookLaunchModal() {
                           : "text-stone-400 hover:text-stone-200"
                       }`}
                     >
-                      {idx === 0 && <span className="w-1.5 h-1.5 rounded-full bg-stone-950 animate-pulse"></span>}
+                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-stone-950 animate-pulse"></span>}
                       <span>{b.title}</span>
-                      {idx === 0 && <span className="text-[10px] uppercase font-bold opacity-80">(Pre-Order)</span>}
+                      {b.id === "chup-mat-raha-karo" ? (
+                        <span className="text-[10px] uppercase font-bold opacity-80">(Pre-Order)</span>
+                      ) : (
+                        <span className="text-[10px] uppercase font-bold opacity-80">(Out Now)</span>
+                      )}
                     </button>
                   );
                 })}

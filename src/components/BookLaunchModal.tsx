@@ -5,33 +5,128 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, ExternalLink, ShoppingBag, BookOpen, Sparkles, ChevronRight } from "lucide-react";
 
-const BOOK_IMAGES = [
-  { url: "/images/books/jaa-rahi-ho/front-cover.jpg", label: "Front Cover" },
-  { url: "/images/books/jaa-rahi-ho/back-cover.png", label: "Back Cover" },
-  { url: "/images/books/jaa-rahi-ho/flipkart-edition.jpg", label: "Flipkart" },
-  { url: "/images/books/jaa-rahi-ho/amazon-edition.png", label: "Amazon" },
-  { url: "/images/books/jaa-rahi-ho/meesho-edition.png", label: "Meesho" },
+interface BookData {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  price: string;
+  releaseTag: string;
+  badge: string;
+  publisher: string;
+  quoteTitle: string;
+  quoteBody: string;
+  quoteAuthor: string;
+  images: { url: string; label: string }[];
+  buttons: {
+    label: string;
+    url: string;
+    isPrimary?: boolean;
+    brand?: "kathaankan" | "amazon" | "flipkart" | "google";
+    badgeText?: string;
+  }[];
+}
+
+const FEATURED_BOOKS: BookData[] = [
+  {
+    id: "chup-mat-raha-karo",
+    slug: "chup-mat-raha-karo",
+    title: "चुप मत रहा करो",
+    subtitle: "ये किताब उन खामोशियों की है, जो बोलना चाहती थीं...",
+    price: "₹199/-",
+    releaseTag: "Pre-Order Available • Launching November 2026",
+    badge: "Upcoming Release • Nov 2026",
+    publisher: "Kathaankan Publications",
+    quoteTitle: "“कुछ बातें जो कभी कह नहीं पाए...”",
+    quoteBody:
+      "वो शब्द बनकर इस किताब में चले आए हैं। ये किताब उन खामोशियों की है, जो बोलना चाहती थीं, उन लम्हों की है जो ठहर गए थे कहीं, और उन एहसासों की है जो अब शब्द बनकर तुम तक पहुँच रहे हैं।",
+    quoteAuthor: "— जो दिल में है, कभी-कभी उसे कह देना चाहिए।",
+    images: [
+      { url: "/images/books/chup-mat-raha-karo/front-cover.jpg", label: "Front Cover" },
+      { url: "/images/books/chup-mat-raha-karo/special-edition.png", label: "Illustrated" },
+      { url: "/images/books/chup-mat-raha-karo/back-cover.jpg", label: "Back Cover" },
+      { url: "/images/books/chup-mat-raha-karo/angle-view.jpg", label: "3D Angle" },
+      { url: "/images/books/chup-mat-raha-karo/book-mockup.jpg", label: "Showcase" },
+    ],
+    buttons: [
+      {
+        label: "Pre-Order Paperback (₹199)",
+        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
+        isPrimary: true,
+        brand: "kathaankan",
+        badgeText: "Paperback ₹199",
+      },
+      {
+        label: "Pre-Order on Amazon",
+        url: "https://kathaankanpublicationhouse.com/book_detail.php?id=104&type=prebooking&utm_source=ig&utm_medium=social&utm_content=link_in_bio",
+        isPrimary: false,
+        brand: "amazon",
+        badgeText: "Pre-Booking",
+      },
+    ],
+  },
+  {
+    id: "jaa-rahi-ho",
+    slug: "jaa-rahi-ho",
+    title: "जा रही हो?",
+    subtitle: "जा रही हो — रुक जाओ, अभी कुछ कहना बाकी है",
+    price: "₹249/-",
+    releaseTag: "Featured Release • In Stock Now",
+    badge: "Official Release • Book 2026",
+    publisher: "Shivija Publications",
+    quoteTitle: "“ज़रुरी है क्या? थोड़ी देर ...”",
+    quoteBody:
+      "अभी मन भर तुम्हारा दीदार भी नहीं हुआ है। तुम्हारे जाने के बाद कहने को बहुत कुछ होगा, मगर सुनने को तुम नहीं होगी।",
+    quoteAuthor: "— रुक जाओ, थोड़ी देर ही सही।",
+    images: [
+      { url: "/images/books/jaa-rahi-ho/front-cover.jpg", label: "Front Cover" },
+      { url: "/images/books/jaa-rahi-ho/back-cover.png", label: "Back Cover" },
+      { url: "/images/books/jaa-rahi-ho/amazon-edition.png", label: "Amazon" },
+      { url: "/images/books/jaa-rahi-ho/flipkart-edition.jpg", label: "Flipkart" },
+      { url: "/images/books/jaa-rahi-ho/meesho-edition.png", label: "Meesho" },
+    ],
+    buttons: [
+      {
+        label: "Order on Amazon",
+        url: "https://amzn.in/d/0fRKiyZK",
+        brand: "amazon",
+        badgeText: "Paperback",
+      },
+      {
+        label: "Order on Flipkart",
+        url: "https://dl.flipkart.com/s/bipABbNNNN",
+        brand: "flipkart",
+        badgeText: "Fast Delivery",
+      },
+      {
+        label: "Read on Google Play Books",
+        url: "https://play.google.com/store/books/details?id=ZfAaEgAAQBAJ",
+        brand: "google",
+        badgeText: "E-Book",
+      },
+    ],
+  },
 ];
 
 export function BookLaunchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [activeBookIndex, setActiveBookIndex] = useState(0); // 0: Chup Mat Raha Karo, 1: Jaa Rahi Ho
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const currentBook = FEATURED_BOOKS[activeBookIndex];
 
   useEffect(() => {
     setHasMounted(true);
-    // Check if dismissed in this session
     try {
-      const dismissed = sessionStorage.getItem("ja_rahi_ho_popup_seen");
+      const dismissed = sessionStorage.getItem("book_launch_popup_seen_nov");
       if (!dismissed) {
-        // Open automatically after 900ms delay for a smooth entry
         const timer = setTimeout(() => {
           setIsOpen(true);
         }, 900);
         return () => clearTimeout(timer);
       }
     } catch {
-      // Fallback: show popup
       setIsOpen(true);
     }
   }, []);
@@ -39,12 +134,17 @@ export function BookLaunchModal() {
   const handleClose = () => {
     setIsOpen(false);
     try {
-      sessionStorage.setItem("ja_rahi_ho_popup_seen", "true");
+      sessionStorage.setItem("book_launch_popup_seen_nov", "true");
     } catch {}
   };
 
   const handleOpen = () => {
     setIsOpen(true);
+  };
+
+  const switchBook = (index: number) => {
+    setActiveBookIndex(index);
+    setActiveImageIndex(0);
   };
 
   if (!hasMounted) return null;
@@ -56,15 +156,17 @@ export function BookLaunchModal() {
         <button
           type="button"
           onClick={handleOpen}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-stone-950 font-semibold shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 border border-amber-400/40 group"
-          title="New Book: जा रही हो? by Anant Yadav"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-semibold shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 border border-amber-400/50 group"
+          title="Featured Books by Anant Yadav"
         >
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-stone-950 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-stone-950"></span>
           </span>
           <BookOpen className="w-4 h-4 text-stone-950" />
-          <span className="text-xs font-serif-literary tracking-wide">जा रही हो? (New Book)</span>
+          <span className="text-xs font-serif-literary tracking-wide font-bold">
+            चुप मत रहा करो (Pre-Order Available)
+          </span>
         </button>
       )}
 
@@ -90,14 +192,32 @@ export function BookLaunchModal() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Header Badge */}
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-mono uppercase tracking-widest font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                Featured Release • Book 2026
-              </span>
-              <span className="text-xs text-stone-400 font-mono hidden sm:inline">
-                Shivija Publications
+            {/* Header Tabs to switch between the 2 books */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pr-10">
+              <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-stone-950/70 border border-stone-800">
+                {FEATURED_BOOKS.map((b, idx) => {
+                  const isActive = idx === activeBookIndex;
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => switchBook(idx)}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-1.5 ${
+                        isActive
+                          ? "bg-amber-500 text-stone-950 font-bold shadow-md shadow-amber-500/30"
+                          : "text-stone-400 hover:text-stone-200"
+                      }`}
+                    >
+                      {idx === 0 && <span className="w-1.5 h-1.5 rounded-full bg-stone-950 animate-pulse"></span>}
+                      <span>{b.title}</span>
+                      {idx === 0 && <span className="text-[10px] uppercase font-bold opacity-80">(Pre-Order)</span>}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <span className="text-xs text-amber-400/90 font-mono hidden sm:inline">
+                {currentBook.publisher}
               </span>
             </div>
 
@@ -107,21 +227,21 @@ export function BookLaunchModal() {
               <div className="md:col-span-5 flex flex-col items-center space-y-3">
                 <div className="relative w-48 sm:w-56 aspect-[3/4] rounded-2xl overflow-hidden border border-amber-500/40 shadow-2xl shadow-black/80 bg-stone-950">
                   <Image
-                    src={BOOK_IMAGES[activeImageIndex].url}
-                    alt="जा रही हो? by Anant Yadav"
+                    src={currentBook.images[activeImageIndex]?.url || currentBook.images[0].url}
+                    alt={`${currentBook.title} by Anant Yadav`}
                     fill
                     className="object-contain"
                     sizes="250px"
                     priority
                   />
                   <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-stone-950/80 text-[10px] font-mono text-amber-300 border border-stone-800">
-                    {BOOK_IMAGES[activeImageIndex].label}
+                    {currentBook.images[activeImageIndex]?.label || "Preview"}
                   </div>
                 </div>
 
                 {/* Amazon-style Scrollable / Clickable Image Thumbnails */}
                 <div className="flex gap-1.5 overflow-x-auto max-w-full py-1 no-scrollbar justify-center">
-                  {BOOK_IMAGES.map((img, idx) => {
+                  {currentBook.images.map((img, idx) => {
                     const isSelected = idx === activeImageIndex;
                     return (
                       <button
@@ -149,87 +269,81 @@ export function BookLaunchModal() {
               {/* Right Column: Title, Poetic Quote & Order Links */}
               <div className="md:col-span-7 space-y-4">
                 <div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-mono uppercase tracking-widest font-semibold mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    {currentBook.badge}
+                  </div>
                   <h2 className="font-serif-literary text-3xl sm:text-4xl font-bold text-amber-200 tracking-tight">
-                    जा रही हो?
+                    {currentBook.title}
                   </h2>
                   <p className="text-sm sm:text-base text-stone-300 font-serif-literary italic mt-1">
-                    जा रही हो — रुक जाओ, अभी कुछ कहना बाकी है
+                    {currentBook.subtitle}
                   </p>
-                  <p className="text-xs font-mono text-amber-400 uppercase tracking-widest mt-1">
-                    Anant Yadav • ₹249/-
+                  <p className="text-xs font-mono text-amber-400 uppercase tracking-widest mt-1 font-semibold">
+                    Anant Yadav • {currentBook.price} • {currentBook.releaseTag}
                   </p>
                 </div>
 
                 {/* Poetry Quote snippet from back cover */}
                 <div className="p-3.5 rounded-2xl bg-stone-950/60 border border-stone-800/80 text-stone-300 text-xs sm:text-sm font-serif-literary leading-relaxed space-y-1.5">
-                  <p className="text-amber-300/90 font-medium">“ज़रुरी है क्या? थोड़ी देर ...”</p>
-                  <p className="text-stone-300/90">
-                    अभी मन भर तुम्हारा दीदार भी नहीं हुआ है। तुम्हारे जाने के बाद कहने को बहुत कुछ होगा, मगर सुनने को तुम नहीं होगी।
-                  </p>
+                  <p className="text-amber-300/90 font-medium">{currentBook.quoteTitle}</p>
+                  <p className="text-stone-300/90">{currentBook.quoteBody}</p>
                   <p className="text-amber-400 font-serif italic text-xs pt-1">
-                    — रुक जाओ, थोड़ी देर ही सही।
+                    {currentBook.quoteAuthor}
                   </p>
                 </div>
 
-                {/* Instant Order Buttons (Amazon, Flipkart, Google Play) */}
+                {/* Instant Order / Pre-order Buttons */}
                 <div className="space-y-2 pt-1">
                   <span className="text-[11px] font-mono uppercase tracking-widest text-stone-400 block">
-                    Available Online On:
+                    {activeBookIndex === 0 ? "Pre-Booking Links:" : "Available Online On:"}
                   </span>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {/* Amazon Button */}
-                    <a
-                      href="https://amzn.in/d/0fRKiyZK"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20 transition-all group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <ShoppingBag className="w-4 h-4 text-stone-950" />
-                        <span>Order on Amazon</span>
-                      </div>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-80 group-hover:translate-x-0.5 transition-transform" />
-                    </a>
+                    {currentBook.buttons.map((btn, idx) => {
+                      const isAmazon = btn.brand === "amazon";
+                      const isFlipkart = btn.brand === "flipkart";
+                      const isGoogle = btn.brand === "google";
+                      const isKathaankan = btn.brand === "kathaankan";
 
-                    {/* Flipkart Button */}
-                    <a
-                      href="https://dl.flipkart.com/s/bipABbNNNN"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#2874F0] hover:bg-[#1f62cf] text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="font-sans font-black text-yellow-300 text-sm">fk</span>
-                        <span>Order on Flipkart</span>
-                      </div>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-80 group-hover:translate-x-0.5 transition-transform" />
-                    </a>
+                      let btnStyle = "bg-stone-800/90 hover:bg-stone-700 text-stone-200 border border-stone-700 font-medium text-xs";
+                      if (isKathaankan || btn.isPrimary) {
+                        btnStyle = "bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-950/30";
+                      } else if (isAmazon) {
+                        btnStyle = "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-amber-500/20";
+                      } else if (isFlipkart) {
+                        btnStyle = "bg-[#2874F0] hover:bg-[#1f62cf] text-white font-bold text-xs uppercase tracking-wider shadow-lg";
+                      }
 
-                    {/* Google Play Book Button */}
-                    <a
-                      href="https://play.google.com/store/books/details?id=ZfAaEgAAQBAJ"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="col-span-1 sm:col-span-2 flex items-center justify-between px-4 py-2.5 rounded-xl bg-stone-800/90 hover:bg-stone-700 text-stone-200 border border-stone-700 font-medium text-xs transition-all group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-amber-400 font-mono">▶</span>
-                        <span>Read on Google Play Books</span>
-                      </div>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 transition-transform" />
-                    </a>
+                      return (
+                        <a
+                          key={idx}
+                          href={btn.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center justify-between px-4 py-2.5 rounded-xl transition-all group ${btnStyle}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {(isAmazon || isKathaankan) && <ShoppingBag className="w-4 h-4 text-stone-950" />}
+                            {isFlipkart && <span className="font-sans font-black text-yellow-300 text-sm">fk</span>}
+                            {isGoogle && <span className="text-amber-400 font-mono">▶</span>}
+                            <span>{btn.label}</span>
+                          </div>
+                          <ExternalLink className="w-3.5 h-3.5 opacity-80 group-hover:translate-x-0.5 transition-transform" />
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* View Details Link */}
                 <div className="pt-2 flex items-center justify-between border-t border-stone-800 text-xs font-mono">
                   <Link
-                    href="/books/jaa-rahi-ho"
+                    href={`/books/${currentBook.slug}`}
                     onClick={handleClose}
                     className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-semibold transition-colors"
                   >
-                    View Full Book Page &amp; Excerpts <ChevronRight className="w-3.5 h-3.5" />
+                    View Full Page &amp; Excerpts <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
                   <button
                     type="button"

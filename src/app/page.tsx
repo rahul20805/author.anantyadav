@@ -226,6 +226,11 @@ export default async function HomePage() {
                   <div>
                     <div className="flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-widest">
                       <span>{book.genre}</span>
+                      {(book.slug === "chup-mat-raha-karo" || book.publicationDate?.toLowerCase().includes("pre-order")) && (
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold">
+                          Pre-Order
+                        </span>
+                      )}
                       {book.rating > 0 && (
                         <span className="flex items-center gap-1 text-amber-300 font-bold ml-auto">
                           <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> {book.rating.toFixed(1)}

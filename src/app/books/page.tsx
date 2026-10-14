@@ -59,7 +59,14 @@ export default async function BooksPage() {
               <div className="flex flex-col justify-between h-full space-y-5 flex-1">
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between text-xs font-mono text-amber-400 uppercase tracking-widest">
-                    <span>{book.genre}</span>
+                    <div className="flex items-center gap-2">
+                      <span>{book.genre}</span>
+                      {(book.slug === "chup-mat-raha-karo" || book.publicationDate?.toLowerCase().includes("pre-order")) && (
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold">
+                          Pre-Order • Launch Nov 2026
+                        </span>
+                      )}
+                    </div>
                     {book.rating > 0 && (
                       <span className="flex items-center gap-1 font-bold text-amber-300">
                         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> {book.rating.toFixed(1)}

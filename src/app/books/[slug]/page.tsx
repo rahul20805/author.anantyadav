@@ -133,6 +133,7 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
               <div className="flex flex-col gap-2.5">
                 {purchaseLinks.map((link, idx) => {
                   const labelLower = link.label.toLowerCase();
+                  const isPreOrder = labelLower.includes("pre-order") || labelLower.includes("preorder") || labelLower.includes("prebooking");
                   const isAmazon = labelLower.includes("amazon");
                   const isFlipkart = labelLower.includes("flipkart");
                   const isGoogle = labelLower.includes("google") || labelLower.includes("play");
@@ -140,7 +141,10 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
                   let btnStyle = "bg-stone-800/80 hover:bg-stone-700 text-stone-200 border border-stone-700";
                   let brandBadge = null;
 
-                  if (isAmazon) {
+                  if (isPreOrder) {
+                    btnStyle = "bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold shadow-xl shadow-amber-950/40 ring-1 ring-amber-400/50";
+                    brandBadge = "Pre-Order";
+                  } else if (isAmazon) {
                     btnStyle = "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-bold shadow-lg shadow-amber-950/30";
                     brandBadge = "Paperback";
                   } else if (isFlipkart) {
@@ -162,7 +166,8 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
                       className={`flex items-center justify-between px-5 py-3.5 rounded-xl text-sm transition-all group ${btnStyle}`}
                     >
                       <div className="flex items-center gap-2.5">
-                        {isAmazon && <ShoppingBag className="w-4 h-4 text-stone-950" />}
+                        {isPreOrder && <ShoppingBag className="w-4 h-4 text-stone-950" />}
+                        {!isPreOrder && isAmazon && <ShoppingBag className="w-4 h-4 text-stone-950" />}
                         {isFlipkart && <span className="font-sans font-black text-yellow-300 text-sm">fk</span>}
                         {isGoogle && <span className="font-mono text-xs">▶</span>}
                         <span>{link.label}</span>
@@ -188,7 +193,7 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
 
         {/* Details Column */}
         <div className="md:col-span-7 space-y-8">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
                 {book.genre}
@@ -200,11 +205,28 @@ export default async function BookDetailsPage({ params }: BookPageProps) {
               )}
             </div>
 
+            {/* Pre-Order / Launch Announcement Banner if applicable */}
+            {(book.slug === "chup-mat-raha-karo" || book.publicationDate?.toLowerCase().includes("pre-order") || book.publicationDate?.toLowerCase().includes("november")) && (
+              <div className="flex flex-wrap items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-amber-500/20 via-amber-600/10 to-stone-900/80 border border-amber-500/40 text-amber-200 text-xs font-mono shadow-lg">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
+                </span>
+                <span className="font-bold uppercase tracking-wider text-amber-300">
+                  Pre-Order Available
+                </span>
+                <span className="text-stone-500">•</span>
+                <span className="text-stone-200 font-medium">Official Launch: November 2026</span>
+                <span className="text-stone-500 hidden sm:inline">•</span>
+                <span className="text-amber-400 font-bold hidden sm:inline">Paperback ₹199/-</span>
+              </div>
+            )}
+
             <h1 className="font-serif-literary text-3xl sm:text-5xl font-bold text-stone-100 tracking-tight leading-tight">
               {book.title}
             </h1>
             {book.subtitle && (
-              <p className="text-stone-400 text-lg italic font-serif-literary">{book.subtitle}</p>
+              <p className="text-stone-300 text-lg italic font-serif-literary">{book.subtitle}</p>
             )}
             <p className="text-sm font-mono text-stone-400">By Anant Yadav</p>
           </div>

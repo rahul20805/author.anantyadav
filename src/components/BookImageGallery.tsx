@@ -27,10 +27,13 @@ export function BookImageGallery({ title, images }: BookImageGalleryProps) {
     const lower = url.toLowerCase();
     if (lower.includes("front-cover") || lower.includes("front")) return "Front Cover";
     if (lower.includes("back-cover") || lower.includes("back")) return "Back Cover";
+    if (lower.includes("special") || lower.includes("illustrated") || lower.includes("sketch")) return "Special Illustrated Edition";
+    if (lower.includes("mockup") || lower.includes("3d")) return "3D Book Showcase";
+    if (lower.includes("angle") || lower.includes("perspective")) return "Angle View";
     if (lower.includes("amazon")) return "Amazon Edition";
     if (lower.includes("flipkart")) return "Flipkart Edition";
     if (lower.includes("meesho")) return "Meesho Edition";
-    return `Page ${index + 1}`;
+    return `View ${index + 1}`;
   };
 
   const handlePrev = useCallback(() => {

@@ -14,6 +14,8 @@ import {
   Star,
   FileText,
   ExternalLink,
+  Bookmark,
+  Camera,
 } from "lucide-react";
 import { SubstackIcon } from "@/components/BrandIcons";
 import { generateSeoMetadata } from "@/lib/seo";
@@ -55,6 +57,11 @@ export default async function HomePage() {
     where: { published: true, isPast: false },
     take: 2,
     orderBy: { date: "asc" },
+  });
+  const featuredMedia = await prisma.mediaItem.findMany({
+    where: { published: true, featured: true },
+    take: 4,
+    orderBy: { createdAt: "desc" },
   });
 
   return (
@@ -421,7 +428,68 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 7. DEDICATED SUBSTACK SPOTLIGHT BANNER */}
+      {/* 7. MEDIA & VISUAL ARTIFACTS SPOTLIGHT */}
+      {featuredMedia.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-800 pb-6">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-widest text-amber-400 flex items-center gap-2">
+                <span className="w-6 h-px bg-amber-500/60" /> Visual Gallery &amp; Collectibles
+              </span>
+              <h2 className="font-serif-literary text-3xl sm:text-4xl font-bold text-stone-100 mt-2">
+                Media, Keepsakes &amp; Artifacts
+              </h2>
+            </div>
+            <Link
+              href="/media"
+              className="text-sm font-medium text-stone-300 hover:text-amber-300 flex items-center gap-1.5 transition-colors"
+            >
+              Explore Full Visual Archive <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredMedia.map((item) => (
+              <Link
+                key={item.id}
+                href="/media"
+                className="group rounded-2xl bg-stone-900/50 border border-stone-800 hover:border-amber-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-lg hover:shadow-xl hover:shadow-amber-950/20"
+              >
+                {item.coverImage && (
+                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-950">
+                    <Image
+                      src={item.coverImage}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-transparent opacity-60" />
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-0.5 rounded-full bg-stone-950/80 backdrop-blur-md border border-amber-500/30 text-amber-300 text-[10px] font-mono uppercase tracking-wider">
+                        {item.mediaType === "merchandise" ? "Collectible" : item.mediaType}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div className="p-5 space-y-2">
+                  <span className="text-[11px] font-mono text-stone-400 block truncate">
+                    {item.publication}
+                  </span>
+                  <h3 className="font-serif-literary text-lg font-bold text-stone-100 group-hover:text-amber-200 transition-colors line-clamp-2">
+                    {item.title}
+                  </h3>
+                  <div className="pt-2 text-xs font-mono text-amber-400 flex items-center gap-1">
+                    <span>View in Archive</span> &rarr;
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 8. DEDICATED SUBSTACK SPOTLIGHT BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl bg-gradient-to-br from-stone-900/90 via-stone-900/60 to-amber-950/30 border border-stone-800 p-8 sm:p-12 overflow-hidden shadow-2xl backdrop-blur-sm">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">

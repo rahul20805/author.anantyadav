@@ -30,6 +30,11 @@ export function BookImageGallery({ title, images }: BookImageGalleryProps) {
     if (lower.includes("special") || lower.includes("illustrated") || lower.includes("sketch")) return "Special Illustrated Edition";
     if (lower.includes("mockup") || lower.includes("3d")) return "3D Book Showcase";
     if (lower.includes("angle") || lower.includes("perspective")) return "Angle View";
+    if (lower.includes("keychain")) return "Book Keychain";
+    if (lower.includes("varanasi")) return "Varanasi Bookmark";
+    if (lower.includes("autumn")) return "Autumn Bookmark";
+    if (lower.includes("launch")) return "Launch Bookmark";
+    if (lower.includes("bookmark")) return "Collector Bookmark";
     if (lower.includes("amazon")) return "Amazon Edition";
     if (lower.includes("flipkart")) return "Flipkart Edition";
     if (lower.includes("meesho")) return "Meesho Edition";

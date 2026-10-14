@@ -43,6 +43,9 @@ const FEATURED_BOOKS: BookData[] = [
     quoteAuthor: "— रुक जाओ, थोड़ी देर ही सही।",
     images: [
       { url: "/images/books/jaa-rahi-ho/front-cover.jpg", label: "Front Cover" },
+      { url: "/images/media/jaa-rahi-ho-keychain-triptych.jpg", label: "Mini Keychain" },
+      { url: "/images/media/jaa-rahi-ho-varanasi-bookmark.jpg", label: "Ghat Bookmark" },
+      { url: "/images/media/jaa-rahi-ho-autumn-bench-bookmark.jpg", label: "Autumn Bookmark" },
       { url: "/images/books/jaa-rahi-ho/back-cover.png", label: "Back Cover" },
       { url: "/images/books/jaa-rahi-ho/amazon-edition.png", label: "Amazon" },
       { url: "/images/books/jaa-rahi-ho/flipkart-edition.jpg", label: "Flipkart" },
